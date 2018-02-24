@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 
 public class MazeCell : MonoBehaviour {
 
@@ -6,10 +7,13 @@ public class MazeCell : MonoBehaviour {
 
 	private MazeCellEdge[] edges = new MazeCellEdge[MazeDirections.Count];
 
+    public Dictionary<string,MazeCell> adjacentCells = new Dictionary<string,MazeCell>();
+
 	private int initializedEdgeCount;
 
     public bool isStart;
     public bool isEnd;
+    public bool isIntersection = false;
 
 	public bool IsFullyInitialized {
 		get {
@@ -40,4 +44,18 @@ public class MazeCell : MonoBehaviour {
 		edges[(int)direction] = edge;
 		initializedEdgeCount += 1;
 	}
+
+    public void OnTriggerEnter(Collider other)
+    {
+        other.gameObject.GetComponent<Player>().currentCell = this;
+
+        if (isEnd)
+        {
+            FindObjectOfType<GameManager>().LoadEnd();
+        }
+        if (isIntersection)
+        {
+            FindObjectOfType<GameManager>().DisplayQuestion(this);
+        }
+    }
 }

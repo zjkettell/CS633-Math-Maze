@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Question : MonoBehaviour {
+public class Question{
 
     public string questionText;
-    private string[] answers = new string[4];
+    public string[] answers = new string[4];
 }

@@ -65,6 +65,7 @@ public class Maze : MonoBehaviour
                     if (walls.Count < 2)
                     {
                         cells[x, z].GetComponentInChildren<Renderer>().material = intersectionMaterial;
+                        cells[x, z].isIntersection = true;
                     }
                     else if (walls.Count == 3)
                     {
@@ -79,17 +80,12 @@ public class Maze : MonoBehaviour
         {
             if (possibleCell != null)
             {
-                //possibleCell.GetComponentInChildren<Renderer>().material = startMaterial;
-
                 if (mazeStart == null)
                 {
                     mazeStart = possibleCell;
                 }
                 else if (getDistanceToStartCorner(possibleCell) < getDistanceToStartCorner(mazeStart))
                 {
-                    print(possibleCell.coordinates);
-                    print(getDistanceToStartCorner(possibleCell));
-                    print(getDistanceToStartCorner(mazeStart));
                     mazeStart = possibleCell;
                 }
 
@@ -101,6 +97,15 @@ public class Maze : MonoBehaviour
                 {
                     mazeEnd = possibleCell;
                 }
+            }
+        }
+
+        foreach (MazeCell cell in cells)
+        {
+            MazePassage[] passage = cell.GetComponentsInChildren<MazePassage>();
+            foreach (MazePassage pass in passage)
+            {
+                cell.adjacentCells.Add(pass.direction.ToString(), pass.otherCell);
             }
         }
 
